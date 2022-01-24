@@ -16,6 +16,7 @@
     "aws-sdk": "^2.1061.0",
     "cloudconvert": "^2.2.4",
     "cloudmersive-convert-api-client": "^2.7.4",
+    "dotenv": "^14.2.0",
     "express": "^4.17.2",
     "express-fileupload": "^1.2.1",
     "file-convert": "^1.1.3",

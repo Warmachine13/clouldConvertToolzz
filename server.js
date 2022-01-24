@@ -3,6 +3,7 @@ const fileUpload = require("express-fileupload");
 const path = require("path");
 
 const fs = require("fs");
+require("dotenv").config();
 
 const {
   ConvertPPTXToPdfInterface,
@@ -20,33 +21,30 @@ app.post("/upload", async (req, res) => {
   if (!req.files) {
     return res.status(400).send("No files were uploaded.");
   }
-
   const file = req.files.file;
-  const path = __dirname + "/files/" + file.name;
-  //   console.log(req.files.file.data);
-  const cloudConvert = new ConvertPPTXToPdfInterface(req.files.file.data);
 
-  const result = await cloudConvert.convert();
+  try {
+    const cloudConvert = new ConvertPPTXToPdfInterface(req.files.file.data);
 
-  fs.writeFileSync(`./${Math.random()}.pdf`, result);
+    const result = await cloudConvert.convert();
+    let file = `${Math.random()}.pdf`;
+    let filename = `./files/${file}`;
 
-  // const pathFile = `${__dirname}/files/${Math.random() * 100}.png}`;
+    fs.writeFileSync(filename, result);
 
-  // fs.writeFile(`${pathFile}`, result, (err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  //   console.log("foi");
-  // });
+    const protocol = req.protocol;
+    const hostname = req.hostname;
 
-  res.send(result).status(200);
+    const fullURL = protocol + "://" + `${hostname}:${process.env.PORT}`;
 
-  return res.status(500).send(pathFile);
-  //   file.mv(path, (err) => {
-  //     if (err) {
-  //     }
-  //     return res.send({ status: "success", path: cloudConvert });
-  //   });
+    return res
+      .json({
+        url: `${fullURL}/${file}`,
+      })
+      .status(200);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
