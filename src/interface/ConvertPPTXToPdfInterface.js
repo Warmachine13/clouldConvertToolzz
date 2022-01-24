@@ -7,7 +7,7 @@ class ConvertPPTXToPdfInterface {
   }
 
   async convert() {
-    return await this.pptxConvert(this.stream);
+    return this.pptxConvert(this.stream);
   }
 }
 
