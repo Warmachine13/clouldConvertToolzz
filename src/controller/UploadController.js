@@ -1,10 +1,10 @@
-const fs = require("fs");
 const {
   ConvertPPTXToPdfInterface,
 } = require("../interface/ConvertPPTXToPdfInterface");
 
+const { defineFileSystem } = require("../utils/defineFileSystem");
+
 class UploadController {
-  constructor() {}
   async handle(req, res) {
     if (!req.files) {
       return res.status(400).send("No files were uploaded.");
@@ -14,21 +14,21 @@ class UploadController {
       const cloudConvert = new ConvertPPTXToPdfInterface(req.files.file.data);
 
       const result = await cloudConvert.convert();
-      let file = `${Date.now()}.pdf`;
-      let filename = `./files/${file}`;
 
-      fs.writeFileSync(filename, result);
+      const fileSystem = defineFileSystem(process.env.FILESYSTEM_DRIVER);
+      const file = await fileSystem.writeFile(result);
 
-      const { protocol, hostname } = req;
+      const { protocol } = req;
 
-      const fullURL = protocol + "://" + `${hostname}:${process.env.PORT}`;
+      const fullURL = protocol + "://" + `${req.get("host")}`;
 
       return res
         .json({
-          url: `${fullURL}/${file}`,
+          url: `${fullURL}/${file.replace("./", "")}`,
         })
         .status(200);
     } catch (error) {
+      console.log(error);
       return res.status(500).send(error);
     }
   }

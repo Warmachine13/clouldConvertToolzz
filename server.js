@@ -5,7 +5,7 @@ const { router } = require("./src/routes");
 require("dotenv").config();
 
 const app = express();
-app.use(express.static("files"));
+app.use("/files", express.static("files"));
 app.use(
   fileUpload({
     createParentPath: true,
