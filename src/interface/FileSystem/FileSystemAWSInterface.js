@@ -17,7 +17,7 @@ class FileSystemAWSInterface {
     const uploadParams = {
       Bucket: bucketName,
       Body: data,
-      Key: file.filename,
+      Key: data.filename,
     };
 
     return await this.s3.upload(uploadParams).promise();
