@@ -17,7 +17,8 @@ class FileSystemAWSInterface {
     const uploadParams = {
       Bucket: bucketName,
       Body: data,
-      Key: `convery/${Math.random()}.pdf`,
+      Key: `convery/${Date.now()}.pdf`,
+      ACL: "public-read",
     };
 
     return await (
