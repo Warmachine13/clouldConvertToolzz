@@ -13,14 +13,16 @@ class FileSystemAWSInterface {
   }
 
   async writeFile(data) {
-    const bucketName = process.env.AWS_BUCKET_NAME;
+    const bucketName = process.env.AWS_BUCKET;
     const uploadParams = {
       Bucket: bucketName,
       Body: data,
-      Key: data.filename,
+      Key: `convery/${Math.random()}.pdf`,
     };
 
-    return await this.s3.putObject(uploadParams).promise();
+    return await (
+      await this.s3.upload(uploadParams).promise()
+    ).Location;
   }
 }
 

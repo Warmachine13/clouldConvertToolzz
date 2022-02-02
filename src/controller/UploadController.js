@@ -17,8 +17,11 @@ class UploadController {
 
       const fileSystem = defineFileSystem(process.env.FILESYSTEM_DRIVER);
       const file = await fileSystem.writeFile(result);
-
       const { protocol } = req;
+
+      if (`${file}`.includes("s3")) {
+        return res.status(200).send({ url: file });
+      }
 
       const fullURL = protocol + "://" + `${req.get("host")}`;
 
