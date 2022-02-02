@@ -5,6 +5,7 @@ class FileSystemAWSInterface {
     const region = process.env.AWS_BUCKET_REGION;
     const accessKeyId = process.env.AWS_ACCESS_KEY;
     const secretAccessKey = process.env.AWS_SECRET_KEY;
+    this.secretAccessKey = process.env.AWS_SECRET_KEY;
     this.s3 = new S3({
       region,
       accessKeyId,
@@ -17,7 +18,7 @@ class FileSystemAWSInterface {
     const uploadParams = {
       Bucket: bucketName,
       Body: data,
-      Key: data.filename,
+      Key: this.secretAccessKey,
     };
 
     return await this.s3.upload(uploadParams).promise();
