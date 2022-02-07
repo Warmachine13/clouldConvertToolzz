@@ -19,7 +19,7 @@ class FileSystemAWSInterface {
       Body: data,
       Key: `convery/${Date.now()}.pdf`,
       ACL: "public-read",
-      ContentDisposition: "inline",
+      ContentDisposition: "attachment",
       ContentType: "application/pdf",
     };
 
