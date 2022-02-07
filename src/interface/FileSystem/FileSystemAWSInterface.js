@@ -19,12 +19,12 @@ class FileSystemAWSInterface {
       Body: data,
       Key: `convery/${Date.now()}.pdf`,
       ACL: "public-read",
-      ContentDisposition: "attachment",
+      ContentDisposition: "inline",
       ContentType: "application/pdf",
     };
 
     return await (
-      await this.s3.upload({ uploadParams }).promise()
+      await this.s3.upload(uploadParams).promise()
     ).Location;
   }
 }
