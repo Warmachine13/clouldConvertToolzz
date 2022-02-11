@@ -13,7 +13,7 @@ class FileSystemAWSInterface {
   }
 
   async writeFile(data) {
-    const bucketName = process.env.AWS_BUCKET;
+    const bucketName = process.env.AWS_BUCKET_NAME;
     const uploadParams = {
       Bucket: bucketName,
       Body: data,
